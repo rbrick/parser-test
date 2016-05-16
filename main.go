@@ -12,7 +12,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	tokenizer := New(string(data), true)
+	tokenizer := NewTokenizer(string(data), true)
 
 	tokenizer.Tokenize()
 

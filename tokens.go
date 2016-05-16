@@ -43,7 +43,7 @@ type Tokenizer struct {
 
 
 // Creates a new tokenizer
-func New(s string, clean bool) *Tokenizer {
+func NewTokenizer(s string, clean bool) *Tokenizer {
 	if clean {
 		s = strings.Replace(s, "\n", "", -1)
 	}
