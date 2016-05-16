@@ -35,6 +35,7 @@ const (
 	TokenNone
 )
 
+// Turns an input string, into a set of tokens that are easy to work with
 type Tokenizer struct {
 	// The current position of the tokenizer
 	Pos         int
