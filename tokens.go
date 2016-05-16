@@ -35,9 +35,13 @@ const (
 type Tokenizer struct {
 	// The current position of the tokenizer
 	Pos         int
+	// The token at the current position of the tokenizer
 	At          Token
+	// The tokens that it has parsed
 	Tokens      []Token
+	// The input
 	Input       string
+	// The length of the input, here for convenience
 	InputLength int
 }
 
@@ -49,7 +53,7 @@ func NewTokenizer(s string, clean bool) *Tokenizer {
 	}
 	return &Tokenizer{
 		Pos: 0,
-		At: Token{tokenType: TokenNone, value: 0},
+		At: Token{tokenType: TokenNone, value: -1},
 		Tokens: []Token{},
 		Input: s,
 		InputLength: len(s),
