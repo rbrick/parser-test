@@ -25,6 +25,9 @@ const (
 	// The token used to close an array
 	TokenArrayClose
 
+	// Used for opening, and closing strings
+	TokenDoubleQuote
+
 	// Anything else that is not a keyword
 	TokenAny
 
@@ -35,8 +38,6 @@ const (
 type Tokenizer struct {
 	// The current position of the tokenizer
 	Pos         int
-	// The token at the current position of the tokenizer
-	At          Token
 	// The tokens that it has parsed
 	Tokens      []Token
 	// The input
@@ -54,7 +55,6 @@ func NewTokenizer(s string, clean bool) *Tokenizer {
 	}
 	return &Tokenizer{
 		Pos: 0,
-		At: Token{tokenType: TokenNone, value: -1},
 		Tokens: []Token{},
 		Input: s,
 		InputLength: len(s),
@@ -65,21 +65,25 @@ func (t *Tokenizer) ParseToken() {
 	// Get the char at the current position
 	charAt := rune(t.Input[t.Pos])
 
+	var token Token
+
 	switch charAt {
 	case '#':
-		t.At = Token{tokenType: TokenComment, value: charAt}
+		token = Token{tokenType: TokenComment, value: charAt}
 	case '=':
-		t.At = Token{tokenType: TokenAssign, value: charAt}
+		token = Token{tokenType: TokenAssign, value: charAt}
 	case '[':
-		t.At = Token{tokenType: TokenArrayStart, value: charAt}
+		token = Token{tokenType: TokenArrayStart, value: charAt}
 	case ']':
-		t.At = Token{tokenType: TokenArrayClose, value: charAt}
+		token = Token{tokenType: TokenArrayClose, value: charAt}
+	case '"':
+		token = Token{tokenType: TokenDoubleQuote, value: charAt}
 	default:
-		t.At = Token{tokenType: TokenAny, value: charAt}
+		token = Token{tokenType: TokenAny, value: charAt}
 	}
 
 	// Append the position
-	t.Tokens = append(t.Tokens, t.At)
+	t.Tokens = append(t.Tokens, token)
 
 	// Increment the position
 	t.Pos++
