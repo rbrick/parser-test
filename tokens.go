@@ -6,7 +6,7 @@ import (
 
 type (
 	TokenType int
-	Token struct {
+	Token     struct {
 		tokenType TokenType
 		value     rune
 	}
@@ -30,23 +30,19 @@ const (
 
 	// Anything else that is not a keyword
 	TokenAny
-
-	// Represents nothing!
-	TokenNone
 )
 
 // Turns an input string, into a set of tokens that are easy to work with
 type Tokenizer struct {
 	// The current position of the tokenizer
-	Pos         int
+	Pos int
 	// The tokens that it has parsed
-	Tokens      []Token
+	Tokens []Token
 	// The input
-	Input       string
+	Input string
 	// The length of the input, here for convenience
 	InputLength int
 }
-
 
 // Creates a new tokenizer
 func NewTokenizer(s string, clean bool) *Tokenizer {
@@ -55,9 +51,9 @@ func NewTokenizer(s string, clean bool) *Tokenizer {
 		s = strings.Replace(strings.Replace(s, "\r", "", -1), "\n", "", -1)
 	}
 	return &Tokenizer{
-		Pos: 0,
-		Tokens: []Token{},
-		Input: s,
+		Pos:         0,
+		Tokens:      []Token{},
+		Input:       s,
 		InputLength: len(s),
 	}
 }
