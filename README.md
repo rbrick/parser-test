@@ -34,5 +34,5 @@ The spaces between them are not required, as they are ignored.
 
 #### Arrays
 Arrays should be comma separated. Arrays may contain multiple data types. The types are limited to Strings, and Numbers.
-I would like to implement dictionaries, eventually. Single element arrays should end with a comma.
+I would like to implement dictionaries, eventually. All elements, including the last, should end with a comma.
 
