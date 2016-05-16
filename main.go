@@ -16,5 +16,10 @@ func main() {
 
 	tokenizer.Tokenize()
 
-	fmt.Println(tokenizer.Tokens)
+	str := ""
+	for _, v := range tokenizer.Tokens {
+		str += string(v.value)
+	}
+
+	fmt.Print(str)
 }

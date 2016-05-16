@@ -48,8 +48,9 @@ type Tokenizer struct {
 
 // Creates a new tokenizer
 func NewTokenizer(s string, clean bool) *Tokenizer {
+	// Clean line separators
 	if clean {
-		s = strings.Replace(s, "\n", "", -1)
+		s = strings.Replace(strings.Replace(s, "\r", "", -1), "\n", "", -1)
 	}
 	return &Tokenizer{
 		Pos: 0,
