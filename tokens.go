@@ -8,7 +8,7 @@ type (
 	TokenType int
 	Token     struct {
 		tokenType TokenType
-		value     rune
+		value     string
 	}
 )
 
@@ -28,6 +28,15 @@ const (
 	// Used for opening, and closing strings
 	TokenDoubleQuote
 
+	// Reprents a String
+	TokenString
+
+	// Represents an integer
+	TokenInteger
+
+	// Represents a float
+	TokenFloat
+
 	// Anything else that is not a keyword
 	TokenAny
 )
@@ -35,11 +44,15 @@ const (
 // Turns an input string, into a set of tokens that are easy to work with
 type Tokenizer struct {
 	// The current position of the tokenizer
-	Pos int
+	Pos         int
+	// The previous token we parsed
+	Prev        Token
+	// The token at the current position
+	At          Token
 	// The tokens that it has parsed
-	Tokens []Token
+	Tokens      []Token
 	// The input
-	Input string
+	Input       string
 	// The length of the input, here for convenience
 	InputLength int
 }
@@ -48,7 +61,7 @@ type Tokenizer struct {
 func NewTokenizer(s string, clean bool) *Tokenizer {
 	// Clean line separators
 	if clean {
-		s = strings.Replace(strings.Replace(s, "\r", "", -1), "\n", "", -1)
+		s = strings.Replace(s, "\r", "", -1)
 	}
 	return &Tokenizer{
 		Pos:         0,
@@ -60,11 +73,11 @@ func NewTokenizer(s string, clean bool) *Tokenizer {
 
 func (t *Tokenizer) ParseToken() {
 	// Get the char at the current position
-	charAt := rune(t.Input[t.Pos])
+	charAt := string(t.Input[t.Pos])
 
 	var token Token
 
-	switch charAt {
+	switch rune(charAt[0]) {
 	case '#':
 		token = Token{tokenType: TokenComment, value: charAt}
 	case '=':
@@ -79,15 +92,31 @@ func (t *Tokenizer) ParseToken() {
 		token = Token{tokenType: TokenAny, value: charAt}
 	}
 
-	// Append the position
 	t.Tokens = append(t.Tokens, token)
+
+	// Swap
+	t.Prev = t.At
+	t.At = token
 
 	// Increment the position
 	t.Pos++
 }
 
+func (t *Tokenizer) ParseString() {
+	//token := Token{tokenType: TokenString, value: ""}
+	t.ParseToken()
+
+	for t.At.value[0] != '"' {
+		// Ignore character escapes
+		if t.At.value[0] == '\\'  {
+			t.ParseToken()
+		}
+	}
+}
+
 func (t *Tokenizer) Tokenize() {
 	for t.Pos < t.InputLength {
 		t.ParseToken()
+
 	}
 }

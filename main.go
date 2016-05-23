@@ -21,5 +21,6 @@ func main() {
 		str += string(v.value)
 	}
 
+	fmt.Println(tokenizer.Tokens)
 	fmt.Print(str)
 }
